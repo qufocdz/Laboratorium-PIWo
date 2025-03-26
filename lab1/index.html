@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>letBook - Strona Główna</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <h1>letBook</h1>
+            <div class="login-buttons">
+                <button>Zaloguj się</button>
+                <button>Zarejestruj się</button>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="menu">
+            <a href="index.html"><button>Strona Główna</button></a>
+            <a href="index2.html"><button>Dodaj Nową Pozycję</button></a>
+            <a href="indexd.html"><button>Koszyk</button></a>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="filters">
+            <h2>Filtry</h2>
+            <div class="price">
+                <label for="cena">Cena:</label>
+                Minimalna cena:
+                <input type="text" value="0" min="0">
+                Maksymalna cena:
+                <input type="text" value="999" min="0">
+            </div>
+            <div class="pages">
+                <label for="pages">Liczba stron:</label>
+                Minimalna liczba stron:
+                <input type="text" value="0" min="0">
+                Maksymalna liczba stron:
+                <input type="text" value="2000" min="0">
+            </div>
+            <label for="cover">Okładka:</label>
+            <select id="cover" name="cover" required>
+                <option value="any">Dowolna</option>
+                <option value="hard">Twarda</option>
+                <option value="soft">Miękka</option>
+            </select>
+
+            <label for="condition">Stan:</label>
+            <select id="condition" name="condition" required>
+                <option value="any">Dowolny</option>
+                <option value="new">Nowa</option>
+                <option value="used">Używana</option>
+            </select>
+            
+            <label for="category">Kategoria:</label>
+            <select id="category" name="category" required>
+                <option value="any">Dowolna</option>
+                <option value="biography">Biografia</option>
+                <option value="fantasy">Fantastyka</option>
+                <option value="fiction">Fikcja</option>
+                <option value="history">Historia</option>
+                <option value="computer-science">Informatyka</option>
+                <option value="comic-book">Komiks</option>
+                <option value="crime">Kryminał</option>
+                <option value="non-fiction">Literatura faktu</option>
+                <option value="science">Nauka</option>
+                <option value="textbook">Podręcznik</option>
+                <option value="poetry">Poezja</option>
+                <option value="novel">Powieść</option>
+                <option value="thriller">Thriller</option>
+                <option value="other">Inne</option>    
+            </select>
+        </div>
+
+        <div class="search-and-results">
+            <section class="search">
+                <label for="criteria"><strong>Kryterium wyszukiwania:</strong></label>
+                <select id="criteria">
+                    <option value="name">Nazwa</option>
+                    <option value="author">Autor</option>
+                    <option value="description">Opis</option>
+                </select>
+                <input type="text" placeholder="Zacznij wyszukiwać!">
+                <button>Szukaj</button>
+
+                <label for="sorting"><strong>Sortowanie:</strong></label>
+                <select id="sorting">
+                    <option value="alphabetical">Alfabetycznie</option>
+                    <option value="newest">Najnowsze</option>
+                    <option value="oldest">Najstarsze</option>
+                    <option value="lowest">Cena od najniższej</option>
+                    <option value="highest">Cena od najwyższej</option>
+                </select>
+            </section>
+
+            <section class="books">
+                <div class="book">
+                    <img src="assets/pan-tadeusz.jpg" alt="Pan Tadeusz">
+                    <p>
+                        <strong>Pan Tadeusz</strong>
+                        <br>Adam Mickiewicz
+                        <br>Okładka: Twarda
+                        <br>Stan: Używana
+                        <br>Kategoria: Poezja
+                        <br>Liczba stron: 352
+                        <br>Cena: 23,99 zł
+                    </p>
+                    <button>Pokaż opis</button>
+                    <button>Dodaj do koszyka</button>
+                </div>
+                <div class="book">
+                    <img src="assets/proces.jpg" alt="Proces">
+                    <p>
+                        <strong>Proces</strong>
+                        <br>Franz Kafka
+                        <br>Okładka: Miękka
+                        <br>Stan: Używana
+                        <br>Kategoria: Powieść
+                        <br>Liczba stron: 216
+                        <br>Cena: 10,99 zł
+                    </p>
+                    <button>Pokaż opis</button>
+                    <button>Dodaj do koszyka</button>
+                </div>
+                <div class="book">
+                    <img src="assets/wprowalgo.jpg" alt="Wprowadzenie do algorytmów">
+                    <p>
+                        <strong>Wprowadzenie do algorytmów</strong>
+                        <br>Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein
+                        <br>Okładka: Twarda
+                        <br>Stan: Używana
+                        <br>Kategoria: Informatyka
+                        <br>Liczba stron: 1208
+                        <br>Cena: 299,99 zł
+                    </p>
+                    <button>Pokaż opis</button>
+                    <button>Dodaj do koszyka</button>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 letBook, Dawid Sobolewski</p>
+    </footer>
+</body>
+
+</html>

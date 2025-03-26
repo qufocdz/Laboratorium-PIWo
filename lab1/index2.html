@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>letBook - Dodaj Nową Pozycję</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <h1>letBook</h1>
+            <div class="login-buttons">
+                <button>Zaloguj się</button>
+                <button>Zarejestruj się</button>
+            </div>
+        </div>
+    </header>
+    
+    <nav>
+        <div class="menu">
+            <a href="index.html"><button>Strona Główna</button></a>
+            <a href="index2.html"><button>Dodaj Nową Pozycję</button></a>
+            <a href="indexd.html"><button>Koszyk</button></a>
+        </div>
+    </nav>
+    
+    <div class="main-container">
+        <form class="book-form">
+            <h2>Dodaj Nową Książkę</h2>
+            
+            <label for="title">Tytuł:</label>
+            <input type="text" id="title" name="title" required>
+            
+            <label for="author">Autor:</label>
+            <input type="text" id="author" name="author" required>
+            
+            <label for="price">Cena (zł):</label>
+            <input type="number" id="price" name="price" min="0" step="0.01" required>
+            
+            <label for="pages">Liczba stron:</label>
+            <input type="number" id="pages" name="pages" min="0" step="1" required>
+
+            <label for="cover">Okładka:</label>
+            <select id="cover" name="cover" required>
+                <option value="hard">Twarda</option>
+                <option value="soft">Miękka</option>
+            </select>
+
+            <label for="condition">Stan:</label>
+            <select id="condition" name="condition" required>
+                <option value="new">Nowa</option>
+                <option value="used">Używana</option>
+            </select>
+            
+            <label for="category">Kategoria:</label>
+            <select id="category" name="category" required>
+                <option value="biography">Biografia</option>
+                <option value="fantasy">Fantastyka</option>
+                <option value="fiction">Fikcja</option>
+                <option value="history">Historia</option>
+                <option value="computer-science">Informatyka</option>
+                <option value="comic-book">Komiks</option>
+                <option value="crime">Kryminał</option>
+                <option value="non-fiction">Literatura faktu</option>
+                <option value="science">Nauka</option>
+                <option value="textbook">Podręcznik</option>
+                <option value="poetry">Poezja</option>
+                <option value="novel">Powieść</option>
+                <option value="thriller">Thriller</option>
+                <option value="other">Inne</option>             
+            </select>
+            
+            <label for="image">Zdjęcie:</label>
+            <input type="file" id="image" name="image" accept="image/*" required>
+            
+            <label for="description">Opis:</label>
+            <textarea id="description" name="description" rows="4" required></textarea>
+            
+            <button type="submit">Dodaj Książkę</button>
+        </form>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 letBook, Dawid Sobolewski</p>
+    </footer>
+</body>
+
+</html>
