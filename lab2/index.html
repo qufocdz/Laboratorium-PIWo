@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+  <meta charset="UTF-8">
+  <title>ToDo List</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js"></script>
+</head>
+
+<body>
+    <div class="panels">
+        <div class="left-panel">
+            <div class="panel">
+                <input type="text" id="new-list-name" placeholder="Nowa lista">
+                <button onclick="addNewList()">Dodaj listę</button>
+            </div>
+
+            <div class="panel">
+                <input type="text" id="item-input" placeholder="Nowe zadanie">
+                <select id="list-selector">
+                <option value="" disabled selected>Wybierz listę</option>
+                </select>
+                <button onclick="addToList()">Dodaj</button>
+            </div>
+
+            <div class="panel">
+                <input type="text" id="filter-input" placeholder="Filtruj zadania">
+                <label class="filter-label">
+                  <input type="checkbox" id="case-sensitive"> 
+                  Uwzględnij wielkość liter
+                </label>
+              </div>              
+
+            <div id="trash">
+                <h3>Śmietnik</h3>
+                <p id="last-deleted">Brak usuniętych zadań.</p>
+                <button id="undo-delete">Cofnij</button>
+            </div>
+        </div>
+
+        <div class="right-panel" id="right-panel">
+        </div>
+    </div>
+
+    <div id="delete-modal" class="modal">
+        <div class="modal-content">
+            <p>Czy na pewno chcesz usunąć to zadanie?</p>
+            <button id="confirm-delete">Tak</button>
+            <button id="cancel-delete">Nie</button>
+        </div>
+    </div>
+</body>
+</html>
