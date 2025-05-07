@@ -1,7 +1,9 @@
 import { useFilters } from "../Contexts/FiltersContext";
+import { useState } from "react";
 
-export default() =>{
+export default () => {
   const { filters, updateSearch } = useFilters();
+  const [showMine, setShowMine] = useState(false);
 
   const handleCriteriaChange = (event) => {
     updateSearch("search", { ...filters.search, criteria: event.target.value });
@@ -15,8 +17,19 @@ export default() =>{
     updateSearch("sorting", event.target.value);
   };
 
+  const handleShowMineToggle = () => {
+    setShowMine((prev) => {
+      const newValue = !prev;
+      updateSearch("showMine", newValue);
+      return newValue;
+    });
+  };
+
   return (
     <section className="search">
+      <button type="button" onClick={handleShowMineToggle}>
+        {showMine ? "Moje" : "Wszystkie"}
+      </button>
       <label htmlFor="criteria">
         <strong>Kryterium wyszukiwania:</strong>
       </label>

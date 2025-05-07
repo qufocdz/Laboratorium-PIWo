@@ -1,7 +1,7 @@
 export function meta() {
     return [
       { title: "LetBook - Koszyk" },
-      { name: "description", content: "Welcome to React Router!" },
+      { name: "description", content: "Zrób zakupy!" },
     ];
   }
   

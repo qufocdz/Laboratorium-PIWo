@@ -1,17 +1,18 @@
-import { useState, useContext } from "react";
-import { BooksContext } from "../Contexts/BooksContext";
+import { useRef, useState } from "react";
+import { createBook } from "../Services/BookService";
+import { useUser } from "../Services/UserService";
 
 export function meta() {
   return [
     { title: "LetBook - Dodaj książkę!" },
-    { name: "description", content: "Dodaj nową książkę do bazy danych!" },
+    { name: "description", content: "Dodaj ksiażkę!" },
   ];
 }
 
 export default function New() {
-  const { books, setBooks } = useContext(BooksContext);
-  
-  const [newBook, setNewBook] = useState({
+  const { user } = useUser();
+
+  const newBookRef = useRef({
     title: "",
     author: "",
     price: "",
@@ -23,56 +24,81 @@ export default function New() {
     description: "",
     date: new Date().toISOString(),
   });
+  const [uploading, setUploading] = useState(false);
+  const [imagePreview, setImagePreview] = useState("");
+
+  if (!user) {
+    return (
+      <section className="book" style={{ textAlign: "center", marginTop: "20px" }}>
+        <div>
+          Zaloguj się, aby dodać książkę.
+        </div>
+      </section>
+    );
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setNewBook((prevBook) => ({
-      ...prevBook,
-      [name]: value,
-    }));
+    newBookRef.current[name] = value;
   };
 
-  const handleFileChange = (e) => {
-    setNewBook((prevBook) => ({
-      ...prevBook,
-      image: URL.createObjectURL(e.target.files[0]),
-    }));
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      newBookRef.current.image = reader.result;
+      setImagePreview(reader.result);
+    };
+    reader.readAsDataURL(file);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    const price = parseFloat(newBook.price);
-    if (isNaN(price)) {
-      alert("Cena musi być liczbą");
-      return;
+    setUploading(true);
+
+    const bookData = { ...newBookRef.current };
+
+    try {
+      const price = parseFloat(bookData.price);
+      if (isNaN(price)) {
+        alert("Cena musi być liczbą");
+        setUploading(false);
+        return;
+      }
+
+      await createBook({
+        ...bookData,
+        price,
+        pages: parseInt(bookData.pages, 10),
+        date: new Date().toISOString(),
+        userId: user ? user.uid : null,
+        userEmail: user ? user.email : null,
+      });
+
+      newBookRef.current = {
+        title: "",
+        author: "",
+        price: "",
+        pages: "",
+        cover: "hard",
+        condition: "new",
+        category: "biography",
+        image: "",
+        description: "",
+        date: new Date().toISOString(),
+      };
+
+      setImagePreview("");
+      alert("Książka została dodana!");
+    } catch (err) {
+      alert("Błąd podczas dodawania książki: " + err.message);
+    } finally {
+      setUploading(false);
     }
-  
-    setBooks([
-      ...books,
-      {
-        ...newBook,
-        price: price,
-        id: books.length + 1,
-      },
-    ]);
-  
-    setNewBook({
-      title: "",
-      author: "",
-      price: "",
-      pages: "",
-      cover: "hard",
-      condition: "new",
-      category: "biography",
-      image: "",
-      description: "",
-      date: new Date().toISOString(),
-    });
-    
-    alert("Książka została dodana!");
   };
-  
+
   return (
     <main className="new">
       <div className="main-container">
@@ -80,80 +106,31 @@ export default function New() {
           <h2>Dodaj Nową Książkę</h2>
 
           <label htmlFor="title">Tytuł:</label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            value={newBook.title}
-            onChange={handleChange}
-            required
-          />
+          <input type="text" id="title" name="title" defaultValue="" onChange={handleChange} required />
 
           <label htmlFor="author">Autor:</label>
-          <input
-            type="text"
-            id="author"
-            name="author"
-            value={newBook.author}
-            onChange={handleChange}
-            required
-          />
+          <input type="text" id="author" name="author" defaultValue="" onChange={handleChange} required />
 
           <label htmlFor="price">Cena (zł):</label>
-          <input
-            type="number"
-            id="price"
-            name="price"
-            value={newBook.price}
-            onChange={handleChange}
-            min="0"
-            step="0.01"
-            required
-          />
+          <input type="number" id="price" name="price" min="0" step="0.01" defaultValue="" onChange={handleChange} required />
 
           <label htmlFor="pages">Liczba stron:</label>
-          <input
-            type="number"
-            id="pages"
-            name="pages"
-            value={newBook.pages}
-            onChange={handleChange}
-            min="0"
-            required
-          />
+          <input type="number" id="pages" name="pages" min="0" defaultValue="" onChange={handleChange} required />
 
           <label htmlFor="cover">Okładka:</label>
-          <select
-            id="cover"
-            name="cover"
-            value={newBook.cover}
-            onChange={handleChange}
-            required
-          >
+          <select id="cover" name="cover" defaultValue="hard" onChange={handleChange} required>
             <option value="hard">Twarda</option>
             <option value="soft">Miękka</option>
           </select>
 
           <label htmlFor="condition">Stan:</label>
-          <select
-            id="condition"
-            name="condition"
-            value={newBook.condition}
-            onChange={handleChange}
-            required
-          >
+          <select id="condition" name="condition" defaultValue="new" onChange={handleChange} required>
             <option value="new">Nowa</option>
             <option value="used">Używana</option>
           </select>
 
           <label htmlFor="category">Kategoria:</label>
-          <select
-            id="category"
-            name="category"
-            value={newBook.category}
-            onChange={handleChange}
-            required
-          >
+          <select id="category" name="category" defaultValue="biography" onChange={handleChange} required>
             <option value="biography">Biografia</option>
             <option value="fantasy">Fantastyka</option>
             <option value="fiction">Fikcja</option>
@@ -170,27 +147,22 @@ export default function New() {
             <option value="other">Inne</option>
           </select>
 
-          <label htmlFor="image">Zdjęcie:</label>
-          <input
-            type="file"
-            id="image"
-            name="image"
-            accept="image/*"
-            onChange={handleFileChange}
-            required
-          />
+          <label htmlFor="image">Zdjęcie książki:</label>
+          <input type="file" id="image" name="image" accept="image/*" onChange={handleImageUpload} />
+
+          {imagePreview && (
+            <div>
+              <p>Podgląd zdjęcia:</p>
+              <img src={imagePreview} alt="Podgląd" style={{ maxWidth: "200px", marginTop: "10px" }} />
+            </div>
+          )}
 
           <label htmlFor="description">Opis:</label>
-          <textarea
-            id="description"
-            name="description"
-            rows="4"
-            value={newBook.description}
-            onChange={handleChange}
-            required
-          ></textarea>
+          <textarea id="description" name="description" rows="4" defaultValue="" onChange={handleChange} required></textarea>
 
-          <button type="submit">Dodaj Książkę</button>
+          <button type="submit" disabled={uploading}>
+            {uploading ? "Dodawanie..." : "Dodaj Książkę"}
+          </button>
         </form>
       </div>
     </main>

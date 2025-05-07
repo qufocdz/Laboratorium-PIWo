@@ -5,7 +5,7 @@ import BookList from "../Components/BookList";
 export function meta() {
   return [
     { title: "LetBook - Strona Główna" },
-    { name: "description", content: "Welcome to React Router!" },
+    { name: "description", content: "Przejrzyj książki!" },
   ];
 }
 
