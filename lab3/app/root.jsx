@@ -15,6 +15,7 @@ import NavBar from "./Components/NavBar";
 
 import { BooksProvider } from "./Contexts/BooksContext";
 import { FiltersProvider } from "./Contexts/FiltersContext";
+import { BasketBooksProvider } from "./Contexts/BasketBooks";
 
 export const links = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -40,10 +41,12 @@ export function Layout({ children }) {
         <Links />
       </head>
       <body>
-        <Header/>
-        <NavBar/>
-        {children}
-        <Footer/>
+        <BasketBooksProvider>
+          <Header/>
+          <NavBar/>
+          {children}
+          <Footer/>
+        </BasketBooksProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -55,7 +58,7 @@ export default function App() {
   return (
     <BooksProvider>
       <FiltersProvider>
-        <Outlet />
+          <Outlet />
       </FiltersProvider>
     </BooksProvider>);
 }

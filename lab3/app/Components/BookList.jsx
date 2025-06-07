@@ -5,6 +5,7 @@ import { useUser } from '../Services/UserService';
 import BookDescriptionModal from './BookDescription';
 import { deleteBook, updateBook } from '../Services/BookService';
 import BookEditModal from './BookEditModal';
+import BasketBooksContext from '../Contexts/BasketBooks';
 
 const filterTranslations = {
   cover: {
@@ -56,10 +57,10 @@ const sortBooks = (books, sortingMethod) => {
 
 export default function BookList() {
   const { books, setBooks } = useContext(BooksContext);
-  const { filters } = useFilters();
-  const { user } = useUser();
+  const { filters } = useFilters();  const { user } = useUser();
   const [selectedBook, setSelectedBook] = useState(null);
   const [editBook, setEditBook] = useState(null);
+  const basket = useContext(BasketBooksContext);
 
   const handleDelete = async (bookId) => {
     if (window.confirm('Czy na pewno chcesz usunąć tę książkę?')) {
@@ -101,33 +102,41 @@ export default function BookList() {
     });
 
   const sortedBooks = sortBooks(filteredBooks, filters.sorting);
-
   return (
     <section className="books">
-      {sortedBooks.map((book) => (
-        <div className="book" key={book.id}>
-          {user && book.userId === user.uid && (
-            <div className="book-buttons">
-              <button onClick={() => setEditBook(book)}>Edytuj</button>
-              <button onClick={() => handleDelete(book.id)}>Usuń</button>
-            </div>
-          )}
+      {sortedBooks.map((book) => {
+        return (
+          <div className="book" key={book.id}>
+            {user && book.userId === user.uid && (
+              <div className="book-buttons">
+                <button onClick={() => setEditBook(book)}>Edytuj</button>
+                <button onClick={() => handleDelete(book.id)}>Usuń</button>
+              </div>
+            )}
 
-          <img src={book.image} alt={book.title} />
-          <p>
-            <strong>{book.title}</strong><br />
-            Autor: {book.author}<br />
-            Okładka: {translateFilter('cover', book.cover)}<br />
-            Stan: {translateFilter('condition', book.condition)}<br />
-            Kategoria: {translateFilter('category', book.category)}<br />
-            Liczba stron: {book.pages}<br />
-            Cena: {Number(book.price).toFixed(2)} zł
-          </p>
-          <button onClick={() => setSelectedBook(book)}>Pokaż opis</button>
-          <button>Dodaj do koszyka</button>
-          <div className="date">Data wystawienia: {new Date(book.date).toLocaleDateString('pl-PL')}</div>
-        </div>
-      ))}
+            <img src={book.image} alt={book.title} />
+            <p>
+              <strong>{book.title}</strong><br />
+              Autor: {book.author}<br />
+              Okładka: {translateFilter('cover', book.cover)}<br />
+              Stan: {translateFilter('condition', book.condition)}<br />
+              Kategoria: {translateFilter('category', book.category)}<br />
+              Liczba stron: {book.pages}<br />
+              Cena: {Number(book.price).toFixed(2)} zł
+            </p>
+            <button onClick={() => setSelectedBook(book)}>Pokaż opis</button>
+            <button
+              onClick={() => {
+                basket.dispatch({ type: 'ADD_ITEM', payload: book });
+              }}
+              style={{ marginLeft: 8 }}
+            >
+              Dodaj do koszyka
+            </button>
+            <div className="date">Data wystawienia: {new Date(book.date).toLocaleDateString('pl-PL')}</div>
+          </div>
+        );
+      })}
 
       <BookDescriptionModal book={selectedBook} onClose={() => setSelectedBook(null)} />
 
